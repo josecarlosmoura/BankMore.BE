@@ -1,4 +1,5 @@
 ﻿using Application.Commands.CreateAccount;
+using Application.Commands.DeactivateAccount;
 using Application.Exeption;
 using Application.Queries.GetAccountByAccountNumber;
 using MediatR;
@@ -42,6 +43,26 @@ namespace BankMore.BE.Controllers
             {
                 var error = new ApiError(ex.Error);
                 return StatusCode(StatusCodes.Status400BadRequest, error);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("deactivate")]
+        public async Task<IActionResult> DeactivateAccount([FromBody] DeactivateAccountCommand command)
+        {
+            try
+            {
+                await _mediator.Send(command);
+                return NoContent(); // 204
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ServiceException ex)
+            {
+                var error = new ApiError(ex.Error);
+                return StatusCode(StatusCodes.Status403Forbidden, error);
             }
         }
     }
