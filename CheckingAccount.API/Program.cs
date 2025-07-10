@@ -1,4 +1,5 @@
 
+using Application.Commands.AuthenticateUser;
 using Application.Commands.CreateAccount;
 using Application.Services.Auth;
 using Infrastructure.Auth;
@@ -31,12 +32,12 @@ namespace BankMore.BE
             builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-            builder.Services.AddScoped<AuthenticateUserService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
 
             // Configura autenticação JWT
             builder.Services.AddAuthentication(options =>
