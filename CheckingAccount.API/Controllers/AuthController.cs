@@ -30,10 +30,10 @@ namespace BankMore.BE.Controllers
             catch (ServiceException ex)
             {
                 var error = new ApiError(ex.Error);
-                return StatusCode((int)ex.Error.Status, error);
+                return StatusCode(StatusCodes.Status400BadRequest, error);
             }
         }
     }
 
-    public record LoginRequest(long cpf, long numero, string Password);
+    public record LoginRequest(string cpf, long numero, string Password);
 }

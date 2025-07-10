@@ -4,18 +4,18 @@ namespace Application.Exeption
 {
     public class ServiceError : IServiceError
     {
-        public HttpStatusCode Status { get; }
+        public string Message { get; }
         public string Type { get; }
 
-        private ServiceError(HttpStatusCode status, string type)
+        private ServiceError(string message, string type)
         {
-            Status = status;
+            Message = message;
             Type = type;
         }
 
         // Adicionar outros erros aqui no futuro
-        public static readonly ServiceError InvalidDocument = new (HttpStatusCode.BadRequest, "INVALID_DOCUMENT");
-        public static readonly ServiceError UserAlreadyExists = new (HttpStatusCode.Conflict, "USER_ALREADY_EXISTS");
-        public static readonly ServiceError Unauthorized = new (HttpStatusCode.Unauthorized, "USER_UNAUTHORIZED");
+        public static readonly ServiceError InvalidDocument = new ("Cpf inválido", "INVALID_DOCUMENT");
+        public static readonly ServiceError UserAlreadyExists = new ("Usuário já existe", "USER_ALREADY_EXISTS");
+        public static readonly ServiceError Unauthorized = new ("Usuário não autorizado para este aperação", "USER_UNAUTHORIZED");
     }
 }

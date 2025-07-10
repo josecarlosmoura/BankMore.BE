@@ -19,9 +19,11 @@ namespace Application.Services.Auth
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<string?> AuthenticateAsync(long cpf, long numero, string password)
+        public async Task<string?> AuthenticateAsync(string cpf, long numero, string password)
         {
-            var account = await _db.ContaCorrente.FirstOrDefaultAsync(u => (u.Cpf == cpf || u.Numero == numero));
+            var cpfOnlyDigits = new string(cpf.Where(char.IsDigit).ToArray());
+
+            var account = await _db.ContaCorrente.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.Numero == numero));
 
             if(account == null)
                 throw new ServiceException(ServiceError.Unauthorized); // CPF não encontrado

@@ -16,8 +16,8 @@ namespace Domain.Entities
         public long Numero { get; set; }
 
         [Required]
-        [Column("cpf", TypeName = "NUMBER(11)")]
-        public long Cpf { get; set; }
+        [Column("cpf", TypeName = "VARCHAR2(11)")]
+        public string Cpf { get; set; } = string.Empty;
 
         [Required]
         [Column("nome", TypeName = "VARCHAR2(200)")]
