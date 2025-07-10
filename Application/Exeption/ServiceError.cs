@@ -15,6 +15,7 @@
         public static readonly ServiceError InvalidDocument = new ("Cpf inválido", "INVALID_DOCUMENT");
         public static readonly ServiceError UserAlreadyExists = new ("Usuário já existe", "USER_ALREADY_EXISTS");
         public static readonly ServiceError Unauthorized = new ("Cpf/Número da conta ou senha incorretos", "USER_UNAUTHORIZED");
-        public static readonly ServiceError InvalidAccount = new("Conta inválida", "INVALID_ACCOUNT");        
+        public static readonly ServiceError InvalidAccount = new("Conta inválida", "INVALID_ACCOUNT");
+        public static readonly ServiceError IncorrectPassword = new ("Senha incorreta", "INCORRECT_PASSWORD");
     }
 }
