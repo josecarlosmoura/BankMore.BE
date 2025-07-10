@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Application.Exeption
+﻿namespace Application.Exeption
 {
     public interface IServiceError
     {

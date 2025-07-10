@@ -1,6 +1,5 @@
 
 using Application.Commands.CreateAccount;
-using Application.Services;
 using Application.Services.Auth;
 using Infrastructure.Auth;
 using Infrastructure.Auth.Interfaces;
