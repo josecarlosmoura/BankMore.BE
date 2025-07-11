@@ -10,11 +10,13 @@ namespace Infrastructure.Data
 
         public DbSet<CheckingAccount> CheckingAccounts => Set<CheckingAccount>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
+        public DbSet<Idempotency> Idempotencies => Set<Idempotency>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CheckingAccountConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new IdempotencyConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
