@@ -17,5 +17,10 @@
         public static readonly ServiceError Unauthorized = new ("Cpf/Número da conta ou senha incorretos", "USER_UNAUTHORIZED");
         public static readonly ServiceError InvalidAccount = new("Conta inválida", "INVALID_ACCOUNT");
         public static readonly ServiceError IncorrectPassword = new ("Senha incorreta", "INCORRECT_PASSWORD");
+        public static readonly ServiceError InactiveAccount = new ("Conta inativa", "INACTIVE_ACCOUNT");
+        public static readonly ServiceError InvalidValue = new("Valor inválido", "INVALID_VALUE");
+        public static readonly ServiceError InvalidType = new("Tipo inválido", "INVALID_TYPE");
+        
+
     }
 }

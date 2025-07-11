@@ -1,8 +1,11 @@
-﻿namespace Domain.Enuns
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Enuns
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TransactionType
     {
-        Credit = 'C',
-        Debit = 'D'
+        Credit,
+        Debit
     }
 }
