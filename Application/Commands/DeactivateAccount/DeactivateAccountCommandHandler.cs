@@ -26,20 +26,20 @@ namespace Application.Commands.DeactivateAccount
             if (string.IsNullOrEmpty(accountId))
                 throw new UnauthorizedAccessException("Invalid or expired token.");
 
-            var account = await _context.ContaCorrente
-            .FirstOrDefaultAsync(a => a.IdContaCorrente == accountId, cancellationToken);
+            var account = await _context.CheckingAccounts
+            .FirstOrDefaultAsync(a => a.CheckingAccountId == accountId, cancellationToken);
 
             if (account == null)
                 throw new ServiceException(ServiceError.InvalidAccount);
 
-            var isPasswordValid = EncryptionService.VerifyPassword(request.Password, account.Salt, account.Senha);
+            var isPasswordValid = EncryptionService.VerifyPassword(request.Password, account.Salt, account.Password);
 
             if (!isPasswordValid)
                 throw new ServiceException(ServiceError.IncorrectPassword);            
 
-            account.Ativo = false;
+            account.IsActive = false;
 
-            _context.ContaCorrente.Update(account);
+            _context.CheckingAccounts.Update(account);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

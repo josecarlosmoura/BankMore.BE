@@ -30,7 +30,7 @@ namespace Application.Commands.CreateAccount
             var cpfOnlyDigits = new string(request.Cpf.Where(char.IsDigit).ToArray());
 
             // Verifica se já existe uma conta com o mesmo CPF
-            var existingAccount = await _context.ContaCorrente
+            var existingAccount = await _context.CheckingAccounts
                 .FirstOrDefaultAsync(c => c.Cpf == cpfOnlyDigits, cancellationToken);
             if (existingAccount != null)
             {
@@ -45,18 +45,18 @@ namespace Application.Commands.CreateAccount
             var encryptedPassword = EncryptionService.Encrypt(request.Password + salt);
 
             // Cria a nova conta
-            var account = new ContaCorrente
+            var account = new CheckingAccount
             {
-                Numero = contaCorrenteNumber,
+                AccountNumber = contaCorrenteNumber,
                 Cpf = cpfOnlyDigits,
-                Nome = request.Name,
-                Ativo = true,
+                FullName = request.Name,
+                IsActive = true,
                 Salt = salt,
-                Senha = encryptedPassword
+                Password = encryptedPassword
             };
 
             // Salva a conta no banco de dados
-            _context.ContaCorrente.Add(account);
+            _context.CheckingAccounts.Add(account);
             await _context.SaveChangesAsync(cancellationToken);
 
             return new AccountDto(account);

@@ -28,14 +28,14 @@ namespace Application.Commands.AuthenticateUser
             if (!string.IsNullOrWhiteSpace(request.Cpf))
                 cpfOnlyDigits = new string(request.Cpf.Where(char.IsDigit).ToArray());
 
-            var account = await _context.ContaCorrente.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.Numero == request.AccountNumber), cancellationToken);
+            var account = await _context.CheckingAccounts.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.AccountNumber == request.AccountNumber), cancellationToken);
 
             // CPF ou Número da conta não encontrados
             if (account == null)
                 throw new ServiceException(ServiceError.Unauthorized);
 
             // Senha incorreta
-            if (!EncryptionService.VerifyPassword(request.Password, account.Salt, account.Senha))
+            if (!EncryptionService.VerifyPassword(request.Password, account.Salt, account.Password))
                 throw new ServiceException(ServiceError.Unauthorized);
 
             var token = _tokenGenerator.GenerateToken(account);

@@ -4,6 +4,6 @@ namespace Infrastructure.Auth.Interfaces
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(ContaCorrente user);
+        string GenerateToken(CheckingAccount user);
     }
 }

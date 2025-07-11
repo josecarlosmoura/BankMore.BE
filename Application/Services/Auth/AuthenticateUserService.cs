@@ -19,16 +19,16 @@ namespace Application.Services.Auth
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<string?> AuthenticateAsync(string cpf, long numero, string password)
+        public async Task<string?> AuthenticateAsync(string cpf, long accountNumber, string password)
         {
             var cpfOnlyDigits = new string(cpf.Where(char.IsDigit).ToArray());
 
-            var account = await _db.ContaCorrente.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.Numero == numero));
+            var account = await _db.CheckingAccounts.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.AccountNumber == accountNumber));
 
             if(account == null)
                 throw new ServiceException(ServiceError.Unauthorized); // CPF não encontrado
 
-            if (!EncryptionService.VerifyPassword(password, account.Salt, account.Senha))
+            if (!EncryptionService.VerifyPassword(password, account.Salt, account.Password))
                 throw new ServiceException(ServiceError.Unauthorized); // Senha incorreta
 
             return _tokenGenerator.GenerateToken(account);

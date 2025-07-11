@@ -6,9 +6,9 @@ namespace Application.DTOs
     {
         public long AccountNumber { get; set; }
 
-        public AccountDto(ContaCorrente account)
+        public AccountDto(CheckingAccount account)
         {
-            AccountNumber = account.Numero;
+            AccountNumber = account.AccountNumber;
         }
     }
 }

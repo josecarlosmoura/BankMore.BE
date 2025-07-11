@@ -16,9 +16,9 @@ namespace Application.Queries.GetAccountByAccountNumber
 
         public async Task<AccountDto?> Handle(GetAccountByAccountNumberQuery request, CancellationToken cancellationToken)
         {
-            var account = await _context.ContaCorrente
+            var account = await _context.CheckingAccounts
                 .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Numero == request.AccountNumber, cancellationToken);
+                .FirstOrDefaultAsync(c => c.AccountNumber == request.AccountNumber, cancellationToken);
 
             return account == null ? null : new AccountDto(account);
         }
