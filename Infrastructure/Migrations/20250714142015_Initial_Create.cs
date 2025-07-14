@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -28,23 +29,31 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Idempotencia",
+                columns: table => new
+                {
+                    chaveIdempotencia = table.Column<byte[]>(type: "RAW(36)", nullable: false),
+                    requisicao = table.Column<byte[]>(type: "RAW(36)", nullable: false),
+                    resultado = table.Column<string>(type: "CLOB", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Idempotencia", x => x.chaveIdempotencia);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movimento",
                 columns: table => new
                 {
                     idMovimento = table.Column<byte[]>(type: "RAW(36)", nullable: false),
                     idContaCorrente = table.Column<byte[]>(type: "RAW(36)", nullable: false),
                     tipoMovimento = table.Column<string>(type: "NVARCHAR2(10)", maxLength: 10, nullable: false),
-                    valor = table.Column<decimal>(type: "DECIMAL(18,2)", precision: 18, scale: 2, nullable: false),
-                    CheckingAccountId = table.Column<byte[]>(type: "RAW(36)", nullable: true)
+                    valor = table.Column<decimal>(type: "DECIMAL(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movimento", x => x.idMovimento);
-                    table.ForeignKey(
-                        name: "FK_Movimento_ContaCorrente_CheckingAccountId",
-                        column: x => x.CheckingAccountId,
-                        principalTable: "ContaCorrente",
-                        principalColumn: "idContaCorrente");
                     table.ForeignKey(
                         name: "FK_Transaction_ContaCorrente",
                         column: x => x.idContaCorrente,
@@ -52,11 +61,6 @@ namespace Infrastructure.Migrations
                         principalColumn: "idContaCorrente",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Movimento_CheckingAccountId",
-                table: "Movimento",
-                column: "CheckingAccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movimento_idContaCorrente",
@@ -67,6 +71,9 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Idempotencia");
+
             migrationBuilder.DropTable(
                 name: "Movimento");
 

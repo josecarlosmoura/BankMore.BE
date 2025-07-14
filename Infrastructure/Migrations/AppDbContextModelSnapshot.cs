@@ -104,9 +104,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("DECIMAL(18,2)")
                         .HasColumnName("valor");
 
-                    b.Property<byte[]>("CheckingAccountId")
-                        .HasColumnType("RAW(36)");
-
                     b.Property<string>("TransactionType")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -116,8 +113,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("TransactionId");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("CheckingAccountId");
 
                     b.ToTable("Movimento", (string)null);
                 });
@@ -131,16 +126,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Transaction_ContaCorrente");
 
-                    b.HasOne("Domain.Entities.CheckingAccount", null)
-                        .WithMany("Transactions")
-                        .HasForeignKey("CheckingAccountId");
-
                     b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CheckingAccount", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

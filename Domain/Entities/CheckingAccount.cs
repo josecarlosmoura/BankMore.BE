@@ -16,12 +16,9 @@
 
         public string Salt { get; set; } = string.Empty;
 
-        // Navigation property for related transactions
-        public ICollection<Transaction> Transactions { get; set; } = default!;
-
         public CheckingAccount()
         {
-            
+
         }
     }
 }

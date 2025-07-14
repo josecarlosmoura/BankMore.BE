@@ -10,6 +10,6 @@ namespace Domain.Entities
         public decimal Amount { get; set; }
 
         // Navigation property for related transactions
-        public CheckingAccount Account { get; set; }
+        public CheckingAccount Account { get; set; } = default!;
     }
 }
