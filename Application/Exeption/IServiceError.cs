@@ -1,10 +1,8 @@
-﻿using System.Net;
-
-namespace Application.Exeption
+﻿namespace Application.Exeption
 {
     public interface IServiceError
     {
-        HttpStatusCode Status { get; }
+        string Message { get; }
         string Type { get; }
     }
 }

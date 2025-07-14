@@ -1,10 +1,15 @@
 
-using Application.Services;
+using Application.Commands.AuthenticateUser;
+using Application.Commands.CreateAccount;
+using Application.Commands.CreateTransaction;
+using Application.Commands.DeactivateAccount;
+using Application.Queries.GetAccountBalance;
 using Application.Services.Auth;
+using Application.Services.CheckingAccount;
 using Infrastructure.Auth;
 using Infrastructure.Auth.Interfaces;
-using Infrastructure.Settings;
 using Infrastructure.Data;
+using Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -31,12 +36,19 @@ namespace BankMore.BE
             builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-            builder.Services.AddScoped<ContaCorrenteService>();
-            builder.Services.AddScoped<AuthenticateUserService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
+
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeactivateAccountCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateTransactionCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAccountBalanceQuery).Assembly));
 
             // Configura autenticação JWT
             builder.Services.AddAuthentication(options =>
@@ -54,7 +66,8 @@ namespace BankMore.BE
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

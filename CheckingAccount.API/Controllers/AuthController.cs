@@ -1,6 +1,9 @@
-﻿using Application.Exeption;
+﻿using Application.Commands.AuthenticateUser;
+using Application.Exeption;
 using Application.Services.Auth;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BankMore.BE.Controllers
 {
@@ -8,20 +11,20 @@ namespace BankMore.BE.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthenticateUserService _authService;
+        private readonly IMediator _mediator;
 
-        public AuthController(AuthenticateUserService authService)
+        public AuthController(IMediator mediator)
         {
-            _authService = authService;
+            _mediator = mediator;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] AuthenticateUserCommand command)
         {
             try
             {
-                var token = await _authService.AuthenticateAsync(request.cpf, request.numero, request.Password);
-                return Ok(new { Token = token });
+                var result = await _mediator.Send(command);
+                return Ok(result);
             }
             catch (ArgumentException ex)
             {
@@ -30,10 +33,10 @@ namespace BankMore.BE.Controllers
             catch (ServiceException ex)
             {
                 var error = new ApiError(ex.Error);
-                return StatusCode((int)ex.Error.Status, error);
+                return StatusCode(StatusCodes.Status401Unauthorized, error);
             }
         }
     }
 
-    public record LoginRequest(long cpf, long numero, string Password);
+    public record LoginRequest(string cpf, long numero, string Password);
 }

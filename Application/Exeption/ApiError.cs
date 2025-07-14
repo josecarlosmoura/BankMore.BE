@@ -1,15 +1,13 @@
-﻿using System.Net;
-
-namespace Application.Exeption
+﻿namespace Application.Exeption
 {
     public class ApiError
     {
-        public HttpStatusCode Status { get; set; }
+        public string Message { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
 
         public ApiError(IServiceError error)
         {
-            Status = error.Status;
+            Message = error.Message;
             Type = error.Type;
         }
     }

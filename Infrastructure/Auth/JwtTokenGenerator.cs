@@ -18,12 +18,13 @@ namespace Infrastructure.Auth
             _settings = options.Value;
         }
 
-        public string GenerateToken(ContaCorrente contaCorrente)
+        public string GenerateToken(CheckingAccount contaCorrente)
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, contaCorrente.IdContaCorrente.ToString()),
-            new Claim(ClaimTypes.Name, contaCorrente.Nome)
+            new Claim(JwtRegisteredClaimNames.Sub, contaCorrente.CheckingAccountId.ToString()),
+            new Claim("account_id", contaCorrente.AccountNumber.ToString()),
+            new Claim(ClaimTypes.Name, contaCorrente.FullName)
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey));

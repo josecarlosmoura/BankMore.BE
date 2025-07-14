@@ -1,10 +1,8 @@
 ﻿using Application.Exeption;
-using Infrastructure.Auth;
 using Infrastructure.Auth.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Services.Auth
 {
@@ -19,14 +17,16 @@ namespace Application.Services.Auth
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<string?> AuthenticateAsync(long cpf, long numero, string password)
+        public async Task<string?> AuthenticateAsync(string cpf, long accountNumber, string password)
         {
-            var account = await _db.ContaCorrente.FirstOrDefaultAsync(u => (u.Cpf == cpf || u.Numero == numero));
+            var cpfOnlyDigits = new string(cpf.Where(char.IsDigit).ToArray());
+
+            var account = await _db.CheckingAccounts.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.AccountNumber == accountNumber));
 
             if(account == null)
                 throw new ServiceException(ServiceError.Unauthorized); // CPF não encontrado
 
-            if (!EncryptionService.VerifyPassword(password, account.Salt, account.Senha))
+            if (!EncryptionService.VerifyPassword(password, account.Salt, account.Password))
                 throw new ServiceException(ServiceError.Unauthorized); // Senha incorreta
 
             return _tokenGenerator.GenerateToken(account);
