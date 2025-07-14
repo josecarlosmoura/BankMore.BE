@@ -3,7 +3,9 @@ using Application.Commands.AuthenticateUser;
 using Application.Commands.CreateAccount;
 using Application.Commands.CreateTransaction;
 using Application.Commands.DeactivateAccount;
+using Application.Queries.GetAccountBalance;
 using Application.Services.Auth;
+using Application.Services.CheckingAccount;
 using Infrastructure.Auth;
 using Infrastructure.Auth.Interfaces;
 using Infrastructure.Data;
@@ -39,10 +41,14 @@ namespace BankMore.BE
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
+
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeactivateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateTransactionCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAccountBalanceQuery).Assembly));
 
             // Configura autenticação JWT
             builder.Services.AddAuthentication(options =>

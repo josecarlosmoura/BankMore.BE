@@ -23,6 +23,7 @@ namespace Infrastructure.Auth
             var claims = new[]
             {
             new Claim(JwtRegisteredClaimNames.Sub, contaCorrente.CheckingAccountId.ToString()),
+            new Claim("account_id", contaCorrente.AccountNumber.ToString()),
             new Claim(ClaimTypes.Name, contaCorrente.FullName)
         };
 

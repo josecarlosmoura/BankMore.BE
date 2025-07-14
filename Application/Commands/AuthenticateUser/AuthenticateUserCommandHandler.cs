@@ -5,7 +5,6 @@ using Infrastructure.Data;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Application.Commands.AuthenticateUser
 {
@@ -13,13 +12,11 @@ namespace Application.Commands.AuthenticateUser
     {
         private readonly AppDbContext _context;
         private readonly IJwtTokenGenerator _tokenGenerator;
-        private readonly IConfiguration _configuration;
 
-        public AuthenticateUserCommandHandler(AppDbContext context, IJwtTokenGenerator tokenGenerator, IConfiguration configuration)
+        public AuthenticateUserCommandHandler(AppDbContext context, IJwtTokenGenerator tokenGenerator)
         {
             _context = context;
             _tokenGenerator = tokenGenerator;
-            _configuration = configuration;
         }
 
         public async Task<AuthenticatedUserDto> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)

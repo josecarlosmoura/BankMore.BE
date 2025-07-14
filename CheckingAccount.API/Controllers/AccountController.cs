@@ -1,6 +1,7 @@
 ﻿using Application.Commands.CreateAccount;
 using Application.Commands.DeactivateAccount;
 using Application.Exeption;
+using Application.Queries.GetAccountBalance;
 using Application.Queries.GetAccountByAccountNumber;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,26 @@ namespace BankMore.BE.Controllers
             {
                 var error = new ApiError(ex.Error);
                 return StatusCode(StatusCodes.Status403Forbidden, error);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetAccountBalanceQuery());
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ServiceException ex)
+            {
+                var error = new ApiError(ex.Error);
+                return StatusCode(StatusCodes.Status400BadRequest, error);
             }
         }
     }

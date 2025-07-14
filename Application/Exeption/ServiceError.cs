@@ -20,7 +20,7 @@
         public static readonly ServiceError InactiveAccount = new ("Conta inativa", "INACTIVE_ACCOUNT");
         public static readonly ServiceError InvalidValue = new("Valor inválido", "INVALID_VALUE");
         public static readonly ServiceError InvalidType = new("Tipo inválido", "INVALID_TYPE");
-        
-
+        public static readonly ServiceError InsufficientBalance = new("Saldo insuficiente", "INSUFFICIENT_BALANCE");
+        public static readonly ServiceError ClaimNotFound = new("Claim 'account_id' não encontrada no token", "CLAIM_NOT_FOUND");
     }
 }

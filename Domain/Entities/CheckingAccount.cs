@@ -16,6 +16,8 @@
 
         public string Salt { get; set; } = string.Empty;
 
+        public decimal Balance { get; set; } = 0m;
+
         public CheckingAccount()
         {
 

@@ -1,10 +1,8 @@
 ﻿using Application.Exeption;
-using Infrastructure.Auth;
 using Infrastructure.Auth.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Services.Auth
 {

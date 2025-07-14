@@ -41,6 +41,12 @@ namespace Infrastructure.Data.Configurations
                   .HasMaxLength(128)
                   .IsRequired();
 
+            entity.Property(a => a.Balance)
+                  .HasColumnName("saldo")
+                  .HasPrecision(18, 2)
+                  .HasDefaultValue(0)
+                  .IsRequired();
+
             entity.Property(c => c.IsActive)
                   .HasColumnName("ativo")
                   .HasConversion<int>() // Oracle não suporta boolean: armazena como 0/1

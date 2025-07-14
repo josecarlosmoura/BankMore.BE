@@ -41,13 +41,13 @@ namespace Application.Commands.CreateTransaction
             if (request.AccountNumber != null)
             {
                 account = await _context.CheckingAccounts.FirstOrDefaultAsync(a => a.AccountNumber == request.AccountNumber, cancellationToken);
+
+                if (account == null)
+                    throw new ServiceException(ServiceError.InvalidAccount);
             }
             else
             {
                 var accountId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                if (string.IsNullOrEmpty(accountId))
-                    throw new UnauthorizedAccessException("Invalid or expired token.");
 
                 account = await _context.CheckingAccounts
                 .FirstOrDefaultAsync(a => a.CheckingAccountId == accountId, cancellationToken);
@@ -83,6 +83,17 @@ namespace Application.Commands.CreateTransaction
                 Amount = request.Amount,
                 TransactionType = request.TransactionType
             };
+
+            // Atualiza saldo na conta
+            if (transaction.TransactionType == TransactionType.Credit)
+                account.Balance += transaction.Amount;
+            else
+            {
+                if (account.Balance < transaction.Amount)
+                    throw new ServiceException(ServiceError.InsufficientBalance);
+
+                account.Balance -= transaction.Amount;
+            }           
 
             _context.Transactions.Add(transaction);
 
