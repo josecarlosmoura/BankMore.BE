@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "MicroServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transfer.API", "MicroServices\TransferMS\Transfer.API\Transfer.API.csproj", "{C9B3D5AC-2FB0-3E0E-BB03-6960750BF5EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{E426C072-441B-4C65-85C7-71E777A0BAFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C9B3D5AC-2FB0-3E0E-BB03-6960750BF5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B3D5AC-2FB0-3E0E-BB03-6960750BF5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9B3D5AC-2FB0-3E0E-BB03-6960750BF5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E426C072-441B-4C65-85C7-71E777A0BAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E426C072-441B-4C65-85C7-71E777A0BAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E426C072-441B-4C65-85C7-71E777A0BAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E426C072-441B-4C65-85C7-71E777A0BAFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{91CA37CE-EFA7-DCF3-839D-AE32A1F95538} = {5FD78989-F97A-4252-9CC6-7A39C5AE97B6}
 		{2CAF9B89-DD2B-F67A-1B56-5735D67A4CE9} = {5FD78989-F97A-4252-9CC6-7A39C5AE97B6}
 		{C9B3D5AC-2FB0-3E0E-BB03-6960750BF5EA} = {5FD78989-F97A-4252-9CC6-7A39C5AE97B6}
+		{E426C072-441B-4C65-85C7-71E777A0BAFB} = {5FD78989-F97A-4252-9CC6-7A39C5AE97B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6BDCEAE-BD01-4B63-8733-9460FFDD0719}

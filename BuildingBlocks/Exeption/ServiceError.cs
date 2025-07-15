@@ -22,5 +22,7 @@
         public static readonly ServiceError InvalidType = new("Tipo inválido", "INVALID_TYPE");
         public static readonly ServiceError InsufficientBalance = new("Saldo insuficiente", "INSUFFICIENT_BALANCE");
         public static readonly ServiceError ClaimNotFound = new("Claim 'account_id' não encontrada no token", "CLAIM_NOT_FOUND");
+        public static readonly ServiceError DebitFailed = new("Falha ao debitar", "DEBIT_FAILED");
+        public static readonly ServiceError CreditFailed = new("Falha ao creditar. Estorno realizado", "CREDIT_FAILED");
     }
 }
