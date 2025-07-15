@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BankMore.BE.Controllers
+namespace Transfer.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -19,7 +18,6 @@ namespace BankMore.BE.Controllers
             _logger = logger;
         }
 
-        [Authorize]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

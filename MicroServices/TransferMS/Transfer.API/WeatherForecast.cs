@@ -1,4 +1,4 @@
-namespace BankMore.BE
+namespace Transfer.API
 {
     public class WeatherForecast
     {
