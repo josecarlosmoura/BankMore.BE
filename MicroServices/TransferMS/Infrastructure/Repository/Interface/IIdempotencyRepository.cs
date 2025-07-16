@@ -1,7 +1,7 @@
-﻿using CheckingAccountMS.Domain.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using TransferMS.Domain.Entities;
 
-namespace CheckingAccountMS.Infrastructure.Repository.Interface
+namespace TransferMS.Infrastructure.Repository.Interface
 {
     public interface IIdempotencyRepository
     {

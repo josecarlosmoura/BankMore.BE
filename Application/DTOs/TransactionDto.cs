@@ -1,4 +1,4 @@
-﻿using TransferMS.Application.Enuns;
+﻿using TransferMS.Domain.Enuns;
 
 namespace TransferMS.Application.DTOs
 {

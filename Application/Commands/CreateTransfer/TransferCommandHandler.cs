@@ -2,33 +2,34 @@
 using BuildingBlocks.Exeption;
 using FluentResults;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using TransferMD.Infrastructure.Repository.Interface;
 using TransferMS.Application.Models;
 using TransferMS.Application.Services.CheckingAccount;
 using TransferMS.Application.Services.HttpClientConnect;
 using TransferMS.Domain.Entities;
-using TransferMS.Infrastructure.Data;
+using TransferMS.Infrastructure.Repository.Interface;
 
 namespace TransferMS.Application.Commands.CreateTransfer
 {
     public class TransferCommandHandler : IRequestHandler<TransferCommand, Result>
     {
+        private readonly ITransferRepository _transferRepository;
+        private readonly IIdempotencyRepository _idempotencyRepository;
         private readonly ICheckingAccountService _checkingAccount;
         private readonly ICheckingAccountHttpClient _accountClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly AppDbContext _context;
 
         public TransferCommandHandler(
+            ITransferRepository transferRepository,
+            IIdempotencyRepository idempotencyRepository,
             ICheckingAccountService checkingAccount,
-            ICheckingAccountHttpClient accountClient,
-            IHttpContextAccessor httpContextAccessor,
-            AppDbContext context)
+            ICheckingAccountHttpClient accountClient
+            )
         {
+            _transferRepository = transferRepository;
+            _idempotencyRepository = idempotencyRepository;
             _checkingAccount = checkingAccount;
             _accountClient = accountClient;
-            _httpContextAccessor = httpContextAccessor;
-            _context = context;
         }
 
         public async Task<Result> Handle(TransferCommand request, CancellationToken cancellationToken)
@@ -65,7 +66,8 @@ namespace TransferMS.Application.Commands.CreateTransfer
                 TransferDate = DateTime.UtcNow
             };
 
-            _context.Transfers.Add(transfer);
+            await _transferRepository.AddAsync(transfer);
+            await _transferRepository.SaveChangesAsync(cancellationToken);
 
             var resultToIdempotency = new ResultToIdempotencyDto
             {
@@ -78,13 +80,13 @@ namespace TransferMS.Application.Commands.CreateTransfer
             };
 
             // Persistir a chave de idempotência
-            _context.Idempotencies.Add(new Idempotency
+            await _idempotencyRepository.AddAsync(new Idempotency
             {
                 IdempotencyKey = request.IdempotencyKey.ToString(),
                 Result = JsonSerializer.Serialize(resultToIdempotency)
             });
-
-            await _context.SaveChangesAsync(cancellationToken);
+            await _idempotencyRepository.SaveChangesAsync(cancellationToken);
+            
             return Result.Ok();
         }
     }

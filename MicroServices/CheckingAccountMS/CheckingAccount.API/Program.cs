@@ -40,7 +40,7 @@ namespace BankMore.BE
 
             // TODO: Melhorar a organização dos repositórios - extrair para arquivo separado
             builder.Services.AddScoped<ICheckingAccountRepository, CheckingAccountRepositoryImpl>();
-            builder.Services.AddScoped<ITransactionRepository, TransactionRepositoryRepositoryImpl>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
             builder.Services.AddScoped<IIdempotencyRepository, IdempotencyRepositoryImpl>();
 
             // TODO: Melhorar a organização dos comandos e queries - extrair para arquivo separado

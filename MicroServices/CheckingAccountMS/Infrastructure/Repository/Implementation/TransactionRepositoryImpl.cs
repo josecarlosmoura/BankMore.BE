@@ -4,11 +4,11 @@ using CheckingAccountMS.Infrastructure.Repository.Interface;
 
 namespace CheckingAccountMS.Infrastructure.Repository.Implementation
 {
-    public class TransactionRepositoryRepositoryImpl : ITransactionRepository
+    public class TransactionRepositoryImpl : ITransactionRepository
     {
         private readonly AppDbContext _context;
 
-        public TransactionRepositoryRepositoryImpl(AppDbContext context)
+        public TransactionRepositoryImpl(AppDbContext context)
         {
             _context = context;
         }
