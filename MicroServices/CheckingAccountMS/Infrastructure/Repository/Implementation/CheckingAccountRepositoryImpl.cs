@@ -17,12 +17,7 @@ namespace CheckingAccountMS.Infrastructure.Repository.Implementation
 
         public async Task AddAsync(CheckingAccount checkingAccount)
         {
-            await _context.AddAsync(checkingAccount);
-        }
-
-        public async Task<CheckingAccount?> FirstOrDefaultAsync(Expression<Func<CheckingAccount, bool>> predicate)
-        {
-            return await _context.CheckingAccounts.FirstOrDefaultAsync(predicate);
+            await _context.CheckingAccounts.AddAsync(checkingAccount);
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
@@ -30,9 +25,14 @@ namespace CheckingAccountMS.Infrastructure.Repository.Implementation
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<CheckingAccount?> FirstOrDefaultAsync(Expression<Func<CheckingAccount, bool>> predicate)
+        {
+            return await _context.CheckingAccounts.FirstOrDefaultAsync(predicate);
+        }
+
         public void Update(CheckingAccount checkingAccount)
         {
-            _context.Update(checkingAccount);
+            _context.CheckingAccounts.Update(checkingAccount);
         }
     }
 }

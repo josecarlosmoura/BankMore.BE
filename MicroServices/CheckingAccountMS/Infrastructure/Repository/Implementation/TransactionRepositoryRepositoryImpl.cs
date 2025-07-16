@@ -15,7 +15,7 @@ namespace CheckingAccountMS.Infrastructure.Repository.Implementation
 
         public async Task AddAsync(Transaction transaction)
         {
-            await _context.AddAsync(transaction);
+            await _context.Transactions.AddAsync(transaction);
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
