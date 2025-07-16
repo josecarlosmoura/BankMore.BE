@@ -1,6 +1,6 @@
 ﻿using TransferMS.Domain.Entities;
 using TransferMS.Infrastructure.Data;
-using TransferMD.Infrastructure.Repository.Interface;
+using TransferMS.Infrastructure.Repository.Interface;
 
 namespace TransferMS.Infrastructure.Repository.Implementation
 {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TransferMD.Infrastructure.Repository.Interface;
+using TransferMS.Infrastructure.Repository.Interface;
 using TransferMS.Application.Commands.CreateTransfer;
 using TransferMS.Application.Services.CheckingAccount;
 using TransferMS.Application.Services.HttpClientConnect;

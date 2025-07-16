@@ -10,7 +10,7 @@ using Moq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
-namespace Tests.Commands.DeactivateAccount
+namespace CheckingAccountMS.Tests.Commands.DeactivateAccount
 {
     [TestFixture]
     public class DeactivateAccountCommandHandlerTests
