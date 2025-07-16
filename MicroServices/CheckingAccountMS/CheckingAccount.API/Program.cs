@@ -5,6 +5,7 @@ using BuildingBlocks.Settings;
 using CheckingAccountMS.Application.Commands.AuthenticateUser;
 using CheckingAccountMS.Application.Commands.CreateAccount;
 using CheckingAccountMS.Application.Commands.CreateTransaction;
+using CheckingAccountMS.Application.Commands.CreateTransfer;
 using CheckingAccountMS.Application.Commands.DeactivateAccount;
 using CheckingAccountMS.Application.Queries.GetAccountBalance;
 using CheckingAccountMS.Infrastructure.Data;
@@ -28,25 +29,22 @@ namespace BankMore.BE
             builder.Services.AddDbContext<AppDbContext>(options => options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-
-            builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeactivateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateTransactionCommand).Assembly));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateTransferCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAccountBalanceQuery).Assembly));
+
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
 
             // Configura autenticação JWT
             builder.Services.AddAuthentication(options =>

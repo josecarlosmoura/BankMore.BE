@@ -1,4 +1,5 @@
-﻿namespace CheckingAccountMS.Application.DTOs
+﻿
+namespace CheckingAccountMS.Application.DTOs
 {
     public class AuthenticatedUserDto
     {

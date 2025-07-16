@@ -24,7 +24,7 @@ namespace CheckingAccountMS.Application.Queries.GetAccountBalance
 
             var account = await _context.CheckingAccounts
                 .AsNoTracking()
-                .FirstOrDefaultAsync(a => a.AccountNumber == accountId);
+                .FirstOrDefaultAsync(a => a.CheckingAccountId.Equals(accountId));
 
             if (string.IsNullOrEmpty(account.CheckingAccountId))
                 throw new ServiceException(ServiceError.InvalidAccount);

@@ -2,7 +2,6 @@
 {
     public interface ICheckingAccountService
     {
-        string AccountId { get; }
         string JwtToken { get; }
     }
 }

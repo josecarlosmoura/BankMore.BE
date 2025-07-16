@@ -1,8 +1,16 @@
 
+using Application.Services.CheckingAccount;
 using BuildingBlocks.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TransferMD.Infrastructure.Repository.Interface;
+using TransferMS.Application.Commands.CreateTransfer;
+using TransferMS.Application.Services.CheckingAccount;
+using TransferMS.Application.Services.HttpClientConnect;
+using TransferMS.Infrastructure.Data;
+using TransferMS.Infrastructure.Repository.Implementation;
 
 namespace Transfer.API
 {
@@ -12,9 +20,22 @@ namespace Transfer.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
+            // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
+            builder.Services.AddScoped<ITransferRepository, TransferRepositoryImpl>();
+            builder.Services.AddScoped<ICheckingAccountHttpClient, CheckingAccountHttpClient>();
+
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TransferCommandHandler).Assembly));
+
+            builder.Services.AddHttpClient<ICheckingAccountHttpClient, CheckingAccountHttpClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7136/api/"); // URL da API Conta Corrente
+            });
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 

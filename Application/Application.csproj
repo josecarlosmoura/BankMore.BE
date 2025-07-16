@@ -18,4 +18,8 @@
     <ProjectReference Include="..\MicroServices\TransferMS\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\BankTransfer\" />
+  </ItemGroup>
+
 </Project>

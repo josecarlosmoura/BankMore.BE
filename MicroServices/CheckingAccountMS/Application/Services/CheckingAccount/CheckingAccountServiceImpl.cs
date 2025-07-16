@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Exeption;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Application.Services.CheckingAccount
 {
@@ -12,16 +13,16 @@ namespace Application.Services.CheckingAccount
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public long GetAccountId()
+        public string GetAccountId()
         {
             var user = _httpContextAccessor.HttpContext?.User;
 
-            var accountIdClaim = user?.FindFirst("account_id")?.Value;
+            var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (accountIdClaim == null)
+            if (userId == null)
                 throw new ServiceException(ServiceError.InvalidAccount);
 
-            return long.Parse(accountIdClaim);
+            return userId;
         }
     }
 }

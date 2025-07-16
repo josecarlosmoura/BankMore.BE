@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using TransferMS.Application.Services.CheckingAccount;
 
 namespace Application.Services.CheckingAccount
 {
-    public class CheckingAccountServiceImpl
+    public class CheckingAccountServiceImpl : ICheckingAccountService
     {
         private readonly IHttpContextAccessor _contextAccessor;
 

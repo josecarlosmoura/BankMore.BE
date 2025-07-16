@@ -2,6 +2,6 @@
 {
     public interface ICheckingAccountService
     {
-        long GetAccountId();
+        string GetAccountId();
     }
 }

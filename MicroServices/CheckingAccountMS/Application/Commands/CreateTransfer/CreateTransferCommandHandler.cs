@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exeption;
+using CheckingAccountMS.Application.Commands.CreateTransfer;
 using CheckingAccountMS.Domain.Entities;
 using CheckingAccountMS.Domain.Enuns;
 using CheckingAccountMS.Infrastructure.Data;
@@ -8,20 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace CheckingAccountMS.Application.Commands.CreateTransaction
+namespace CheckingAccountMS.Application.Commands.CreateTransfer
 {
-    public class CreateTransactionCommandHandler : IRequestHandler<CreateTransactionCommand, string>
+    public class CreateTransferCommandHandler : IRequestHandler<CreateTransferCommand, string>
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateTransactionCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CreateTransferCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateTransferCommand request, CancellationToken cancellationToken)
         {
             // Verifica se a requisição já foi processada
             var existing = await _context.Idempotencies
@@ -66,11 +67,6 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
 
             }
 
-            if (request.AccountNumber != account.AccountNumber && request.TransactionType == TransactionType.Credit)
-            {
-                throw new ServiceException(ServiceError.InvalidType);
-            }
-
             var transaction = new Transaction
             {
                 AccountId = account.CheckingAccountId,
@@ -99,7 +95,7 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
             });
             await _context.SaveChangesAsync(cancellationToken);
 
-            return transaction.TransactionId;
+            return transaction.AccountId;
         }
     }
 }

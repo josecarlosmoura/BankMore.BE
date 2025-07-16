@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using TransferMS.Application.DTOs;
+using TransferMS.Application.Enuns;
 using TransferMS.Application.Models;
 
 namespace TransferMS.Application.Services.HttpClientConnect
@@ -13,42 +15,48 @@ namespace TransferMS.Application.Services.HttpClientConnect
             _httpClient = httpClient;
         }
 
-        // Todo : Implementar um único endpoint lincando no endpoint de transações, pois ele já faz todas as validações necessárias.
-
-        public async Task<bool> IsValidAsync(string accountId, string token)
+        public async Task<OperationResult> DebitAsync(decimal amount, Guid IdempotencyKey, string token)
         {
-            // Simulado. Implemente a chamada real conforme seu endpoint de conta.
-            return true;
-        }
-
-        public async Task<bool> IsActiveAsync(string accountId, string token)
-        {
-            // Simulado. Implemente a chamada real conforme seu endpoint de conta.
-            return true;
-        }
-
-        public async Task<OperationResult> DebitAsync(string accountId, decimal amount, string requestId, string token)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/checking-account/debit")
+            var transferDto = new TransactionDto
             {
-                Content = JsonContent.Create(new { accountId, amount, requestId })
+                Amount = amount,
+                AccountNumber = null, // Assuming account number is not needed for debit
+                IdempotencyKey = IdempotencyKey,
+                TransactionType = TransactionType.Debit
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "transfer")
+            {
+                Content = JsonContent.Create(transferDto)
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
-            return new OperationResult { Success = response.IsSuccessStatusCode };
+            var result = await response.Content.ReadFromJsonAsync<OperationResult>();
+
+            return result;
         }
 
-        public async Task<OperationResult> CreditAsync(string accountNumber, decimal amount, string requestId, string token)
+        public async Task<OperationResult> CreditAsync(long? accountNumber, decimal amount, Guid IdempotencyKey, string token)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/checking-account/credit")
+            var transferDto = new TransactionDto
             {
-                Content = JsonContent.Create(new { accountNumber, amount, requestId })
+                Amount = amount,
+                AccountNumber = accountNumber,
+                IdempotencyKey = IdempotencyKey,
+                TransactionType = TransactionType.Credit
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "transfer")
+            {
+                Content = JsonContent.Create(transferDto)
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.SendAsync(request);
-            return new OperationResult { Success = response.IsSuccessStatusCode };
+            var result = await response.Content.ReadFromJsonAsync<OperationResult>();
+
+            return result;
         }
     }
 }
