@@ -2,20 +2,19 @@
 using BuildingBlocks.Exeption;
 using BuildingBlocks.Security;
 using CheckingAccountMS.Application.DTOs;
-using CheckingAccountMS.Infrastructure.Data;
+using CheckingAccountMS.Infrastructure.Repository.Interface;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CheckingAccountMS.Application.Commands.AuthenticateUser
 {
     public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticatedUserDto>
     {
-        private readonly AppDbContext _context;
+        private readonly ICheckingAccountRepository _checkingAccountRepository;
         private readonly IJwtTokenGenerator _tokenGenerator;
 
-        public AuthenticateUserCommandHandler(AppDbContext context, IJwtTokenGenerator tokenGenerator)
+        public AuthenticateUserCommandHandler(ICheckingAccountRepository checkingAccountRepository, IJwtTokenGenerator tokenGenerator)
         {
-            _context = context;
+            _checkingAccountRepository = checkingAccountRepository;
             _tokenGenerator = tokenGenerator;
         }
 
@@ -25,7 +24,7 @@ namespace CheckingAccountMS.Application.Commands.AuthenticateUser
             if (!string.IsNullOrWhiteSpace(request.Cpf))
                 cpfOnlyDigits = new string(request.Cpf.Where(char.IsDigit).ToArray());
 
-            var account = await _context.CheckingAccounts.FirstOrDefaultAsync(u => (u.Cpf == cpfOnlyDigits || u.AccountNumber == request.AccountNumber), cancellationToken);
+            var account = await _checkingAccountRepository.FirstOrDefaultAsync(u => u.Cpf == cpfOnlyDigits || u.AccountNumber == request.AccountNumber);
 
             // CPF ou Número da conta não encontrados
             if (account == null)

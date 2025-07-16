@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TransferMS.Application.Enuns
+namespace TransferMS.Domain.Enuns
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TransactionType

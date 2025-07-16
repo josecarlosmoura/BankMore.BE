@@ -11,6 +11,7 @@ using TransferMS.Application.Services.CheckingAccount;
 using TransferMS.Application.Services.HttpClientConnect;
 using TransferMS.Infrastructure.Data;
 using TransferMS.Infrastructure.Repository.Implementation;
+using TransferMS.Infrastructure.Repository.Interface;
 
 namespace Transfer.API
 {
@@ -25,8 +26,12 @@ namespace Transfer.API
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
+
             builder.Services.AddScoped<ITransferRepository, TransferRepositoryImpl>();
+            builder.Services.AddScoped<IIdempotencyRepository, IdempotencyRepositoryImpl>();
+
             builder.Services.AddScoped<ICheckingAccountHttpClient, CheckingAccountHttpClient>();
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(TransferCommandHandler).Assembly));

@@ -9,6 +9,8 @@ using CheckingAccountMS.Application.Commands.CreateTransfer;
 using CheckingAccountMS.Application.Commands.DeactivateAccount;
 using CheckingAccountMS.Application.Queries.GetAccountBalance;
 using CheckingAccountMS.Infrastructure.Data;
+using CheckingAccountMS.Infrastructure.Repository.Implementation;
+using CheckingAccountMS.Infrastructure.Repository.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,6 +38,12 @@ namespace BankMore.BE
             builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
 
+            // TODO: Melhorar a organização dos repositórios - extrair para arquivo separado
+            builder.Services.AddScoped<ICheckingAccountRepository, CheckingAccountRepositoryImpl>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
+            builder.Services.AddScoped<IIdempotencyRepository, IdempotencyRepositoryImpl>();
+
+            // TODO: Melhorar a organização dos comandos e queries - extrair para arquivo separado
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeactivateAccountCommand).Assembly));

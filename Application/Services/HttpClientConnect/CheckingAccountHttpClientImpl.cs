@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using TransferMS.Application.DTOs;
-using TransferMS.Application.Enuns;
 using TransferMS.Application.Models;
+using TransferMS.Domain.Enuns;
 
 namespace TransferMS.Application.Services.HttpClientConnect
 {

@@ -18,9 +18,9 @@ namespace TransferMS.Infrastructure.Repository.Implementation
             await _context.Transfers.AddAsync(transfer);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
