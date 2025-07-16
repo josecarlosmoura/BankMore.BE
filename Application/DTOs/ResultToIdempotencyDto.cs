@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TransferMS.Application.Models;
 
 namespace Application.DTOs
 {
-    internal class ResultToIdempotencyDto
+    public class ResultToIdempotencyDto
     {
+        public Guid IdempotencyKeyFromDebit { get; set; }
+        public OperationResult DebitResult { get; set; }
+        public Guid IdempotencyKeyFromCredit { get; set; }
+        public OperationResult CreditResult { get; set; }
+        public Guid? IdempotencyKeyFromTransferRefund { get; set; }
+        public OperationResult? TransferRefundResult { get; set; }
     }
 }

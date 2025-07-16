@@ -74,7 +74,7 @@ namespace TransferMS.Application.Commands.CreateTransfer
                 IdempotencyKeyFromCredit = transferRequest.IdempotencyKey,
                 CreditResult = credit,
                 IdempotencyKeyFromTransferRefund = transferRefund?.IdempotencyKey,
-                transferRefundResult = transferRefundResult
+                TransferRefundResult = transferRefundResult
             };
 
             // Persistir a chave de idempotência
