@@ -1,7 +1,7 @@
-﻿namespace Application.Services.CheckingAccount
+﻿namespace TransferMS.Application.Services.CheckingAccount
 {
     public interface ICheckingAccountService
     {
-        long GetAccountId();
+        string JwtToken { get; }
     }
 }
