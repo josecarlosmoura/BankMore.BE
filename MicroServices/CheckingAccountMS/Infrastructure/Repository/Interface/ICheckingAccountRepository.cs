@@ -8,5 +8,6 @@ namespace CheckingAccountMS.Infrastructure.Repository.Interface
         Task AddAsync(CheckingAccount checkingAccount);
         Task SaveChangesAsync(CancellationToken cancellationToken);
         Task<CheckingAccount?> FirstOrDefaultAsync(Expression<Func<CheckingAccount, bool>> predicate);
+        void Update(CheckingAccount checkingAccount);
     }
 }

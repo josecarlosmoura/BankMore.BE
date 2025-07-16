@@ -2,6 +2,7 @@
 using CheckingAccountMS.Domain.Entities;
 using CheckingAccountMS.Domain.Enuns;
 using CheckingAccountMS.Infrastructure.Data;
+using CheckingAccountMS.Infrastructure.Repository.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,18 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
     public class CreateTransactionCommandHandler : IRequestHandler<CreateTransactionCommand, string>
     {
         private readonly AppDbContext _context;
+        private readonly ICheckingAccountRepository _checkingAccountRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateTransactionCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public CreateTransactionCommandHandler(AppDbContext context,
+            ICheckingAccountRepository checkingAccountRepository,
+            ITransactionRepository transactionRepository,
+            IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _checkingAccountRepository = checkingAccountRepository;
+            _transactionRepository = transactionRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -34,7 +42,7 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
 
             if (request.AccountNumber != null)
             {
-                account = await _context.CheckingAccounts.FirstOrDefaultAsync(a => a.AccountNumber == request.AccountNumber, cancellationToken);
+                account = await _checkingAccountRepository.FirstOrDefaultAsync(a => a.AccountNumber == request.AccountNumber);
 
                 if (account == null)
                     throw new ServiceException(ServiceError.InvalidAccount);
@@ -43,8 +51,7 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
             {
                 var accountId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                account = await _context.CheckingAccounts
-                .FirstOrDefaultAsync(a => a.CheckingAccountId == accountId, cancellationToken);
+                account = await _checkingAccountRepository.FirstOrDefaultAsync(a => a.CheckingAccountId == accountId);
 
                 if (account == null)
                     throw new ServiceException(ServiceError.InvalidAccount);
@@ -89,15 +96,16 @@ namespace CheckingAccountMS.Application.Commands.CreateTransaction
                 account.Balance -= transaction.Amount;
             }           
 
-            _context.Transactions.Add(transaction);
+            await _transactionRepository.AddAsync(transaction);
 
-            // Persistir a chave de idempotência
+            // Adiciona a idempotência
             _context.Idempotencies.Add(new Idempotency
             {
                 IdempotencyKey = request.IdempotencyKey.ToString(),
                 Result = JsonSerializer.Serialize(transaction)
             });
-            await _context.SaveChangesAsync(cancellationToken);
+
+            await _transactionRepository.SaveChangesAsync(cancellationToken);
 
             return transaction.TransactionId;
         }

@@ -29,5 +29,10 @@ namespace CheckingAccountMS.Infrastructure.Repository.Implementation
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public void Update(CheckingAccount checkingAccount)
+        {
+            _context.Update(checkingAccount);
+        }
     }
 }

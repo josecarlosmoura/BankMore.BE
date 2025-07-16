@@ -6,7 +6,6 @@ using CheckingAccountMS.Domain.Entities;
 using CheckingAccountMS.Infrastructure.Repository.Interface;
 using CheckingAccountMS.Infrastructure.Utils;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CheckingAccountMS.Application.Commands.CreateAccount
 {

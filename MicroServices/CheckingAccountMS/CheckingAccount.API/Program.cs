@@ -38,8 +38,11 @@ namespace BankMore.BE
             builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             builder.Services.AddScoped<ICheckingAccountService, CheckingAccountServiceImpl>();
 
+            // TODO: Melhorar a organização dos repositórios - extrair para arquivo separado
             builder.Services.AddScoped<ICheckingAccountRepository, CheckingAccountRepositoryImpl>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepositoryRepositoryImpl>();
 
+            // TODO: Melhorar a organização dos comandos e queries - extrair para arquivo separado
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateAccountCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuthenticateUserCommand).Assembly));
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DeactivateAccountCommand).Assembly));

@@ -1,21 +1,21 @@
 ﻿using BuildingBlocks.Exeption;
 using BuildingBlocks.Security;
 using CheckingAccountMS.Infrastructure.Data;
+using CheckingAccountMS.Infrastructure.Repository.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace CheckingAccountMS.Application.Commands.DeactivateAccount
 {
     public class DeactivateAccountCommandHandler : IRequestHandler<DeactivateAccountCommand, Unit>
     {
-        private readonly AppDbContext _context;
+        private readonly ICheckingAccountRepository _checkingAccountRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DeactivateAccountCommandHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public DeactivateAccountCommandHandler(ICheckingAccountRepository checkingAccountRepository, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
+            _checkingAccountRepository = checkingAccountRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -26,8 +26,7 @@ namespace CheckingAccountMS.Application.Commands.DeactivateAccount
             if (string.IsNullOrEmpty(accountId))
                 throw new UnauthorizedAccessException("Invalid or expired token.");
 
-            var account = await _context.CheckingAccounts
-            .FirstOrDefaultAsync(a => a.CheckingAccountId == accountId, cancellationToken);
+            var account = await _checkingAccountRepository.FirstOrDefaultAsync(a => a.CheckingAccountId == accountId);
 
             if (account == null)
                 throw new ServiceException(ServiceError.InvalidAccount);
@@ -39,8 +38,8 @@ namespace CheckingAccountMS.Application.Commands.DeactivateAccount
 
             account.IsActive = false;
 
-            _context.CheckingAccounts.Update(account);
-            await _context.SaveChangesAsync(cancellationToken);
+            _checkingAccountRepository.Update(account);
+            await _checkingAccountRepository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
