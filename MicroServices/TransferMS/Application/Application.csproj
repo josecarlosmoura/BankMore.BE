@@ -13,13 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj" />
-    <ProjectReference Include="..\MicroServices\TransferMS\Domain\Domain.csproj" />
-    <ProjectReference Include="..\MicroServices\TransferMS\Infrastructure\Infrastructure.csproj" />
+    <Folder Include="Services\BankTransfer\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\BankTransfer\" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

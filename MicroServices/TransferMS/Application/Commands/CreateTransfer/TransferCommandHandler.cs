@@ -3,7 +3,7 @@ using BuildingBlocks.Exeption;
 using FluentResults;
 using MediatR;
 using System.Text.Json;
-using TransferMD.Infrastructure.Repository.Interface;
+using TransferMS.Infrastructure.Repository.Interface;
 using TransferMS.Application.Models;
 using TransferMS.Application.Services.CheckingAccount;
 using TransferMS.Application.Services.HttpClientConnect;

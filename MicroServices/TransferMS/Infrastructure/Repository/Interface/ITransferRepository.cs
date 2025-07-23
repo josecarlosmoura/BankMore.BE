@@ -1,6 +1,6 @@
 ﻿using TransferMS.Domain.Entities;
 
-namespace TransferMD.Infrastructure.Repository.Interface
+namespace TransferMS.Infrastructure.Repository.Interface
 {
     public interface ITransferRepository
     {
