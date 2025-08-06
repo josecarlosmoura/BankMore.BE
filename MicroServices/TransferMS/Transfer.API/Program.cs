@@ -1,4 +1,3 @@
-
 using Application.Services.CheckingAccount;
 using BuildingBlocks.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,7 +10,6 @@ using TransferMS.Application.Services.CheckingAccount;
 using TransferMS.Application.Services.HttpClientConnect;
 using TransferMS.Infrastructure.Data;
 using TransferMS.Infrastructure.Repository.Implementation;
-using TransferMS.Infrastructure.Repository.Interface;
 
 namespace Transfer.API
 {
